@@ -141,3 +141,96 @@ cv2.imshow('detected circles',cimg)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
 
+
+#%% Question 3 phase 2 without Gaussian Filter
+import cv2
+import numpy as np
+# ready for capturing
+cap = cv2.VideoCapture("G:/Computer Vision/HW1_phase2/MyVideo.avi")
+while(1):
+    #reading frames
+  
+    _, frame1 = cap.read() 
+    
+      
+    #changing frames to grayscale
+    frame = cv2.cvtColor(frame1, cv2.COLOR_BGR2GRAY) 
+    # using Sobel    
+    sobelx = cv2.Sobel(frame,cv2.CV_64F,1,0,ksize=5) 
+       
+    sobely = cv2.Sobel(frame,cv2.CV_64F,0,1,ksize=5) 
+    
+    sobel1 = np.sqrt(pow(sobelx, 2) + pow(sobely, 2))
+    sobel = sobel1.astype(np.uint16)
+    # using prewitt filter
+    kernelx = np.array([[1,1,1],[0,0,0],[-1,-1,-1]])
+    kernely = np.array([[-1,0,1],[-1,0,1],[-1,0,1]])
+    
+    prewittx = cv2.filter2D(frame, -1, kernelx)
+    prewitty = cv2.filter2D(frame, -1, kernely)
+    
+    prewitt = prewittx + prewitty
+    #using canny filter    
+    canny = cv2.Canny(frame,100,200)
+      
+     
+    cv2.imshow('prewitt',prewitt) 
+    cv2.imshow('canny',canny) 
+    cv2.imshow('sobel',sobel)
+    k = cv2.waitKey(5) & 0xFF
+    if k == 27: 
+        break
+  
+cv2.destroyAllWindows() 
+cap.release() 
+
+
+#%% Question 3 phase 2 with Gaussian Filter
+
+import cv2
+import numpy as np
+# ready for capturing
+cap = cv2.VideoCapture("G:/Computer Vision/HW1_phase2/MyVideo.avi")
+while(1): 
+    #reading frames
+  
+    _, frame1 = cap.read() 
+      
+    #changing frames to grayscale
+    frame = cv2.cvtColor(frame1, cv2.COLOR_BGR2GRAY) 
+    #using gaussian filter
+    frame_gaussian = cv2.GaussianBlur(frame,(5,5),0)
+    # using Sobel   
+    sobelx = cv2.Sobel(frame_gaussian,cv2.CV_64F,1,0,ksize=5)       
+    sobely = cv2.Sobel(frame_gaussian,cv2.CV_64F,0,1,ksize=5) 
+    
+    sobel1 = np.sqrt(pow(sobelx, 2) + pow(sobely, 2))
+    sobel = sobel1.astype(np.uint16)
+
+    
+    
+    # using prewitt filter
+    kernelx = np.array([[1,1,1],[0,0,0],[-1,-1,-1]])
+    kernely = np.array([[-1,0,1],[-1,0,1],[-1,0,1]])
+    
+    prewittx = cv2.filter2D(frame_gaussian, -1, kernelx)
+    prewitty = cv2.filter2D(frame_gaussian, -1, kernely)
+    
+    prewitt1 = np.sqrt(pow(prewittx, 2) + pow(prewitty, 2))
+    prewitt = prewitt1.astype(np.uint8)
+    
+    
+    #using canny filter  
+    canny = cv2.Canny(frame_gaussian,100,200)
+      
+    
+    cv2.imshow('prewitt',prewitt) 
+    cv2.imshow('canny',canny) 
+    cv2.imshow('sobel',sobel) 
+    k = cv2.waitKey(5) & 0xFF
+    if k == 27: 
+        break
+  
+cv2.destroyAllWindows() 
+cap.release() 
+
