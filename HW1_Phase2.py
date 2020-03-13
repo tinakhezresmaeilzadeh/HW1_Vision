@@ -44,4 +44,46 @@ cv2.imshow("edge detection", Sobel)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
 
+#%% Question 4
+import cv2
+import numpy as np
+One = cv2.imread("G:/Computer Vision/HW1_phase2/1.jpg")
+Two = cv2.imread("G:/Computer Vision/HW1_phase2/2.jpg")
+# changing to grayscale
+One_Gray = cv2.cvtColor(One, cv2.COLOR_BGR2GRAY) 
+Two_Gray = cv2.cvtColor(Two, cv2.COLOR_BGR2GRAY) 
+
+#using sobel algorythm for 1.jpg
+sobelx_One = cv2.Sobel(One_Gray,cv2.CV_64F,1,0,ksize=5) 
+sobely_One = cv2.Sobel(One_Gray,cv2.CV_64F,0,1,ksize=5) 
+sobel_One1 = np.sqrt(pow(sobelx_One, 2) + pow(sobely_One, 2))
+sobel_One = sobel_One1.astype(np.uint16)
+
+#using canny and LoG for 1.jpg
+canny_One = cv2.Canny(One_Gray,100,200)
+blur_One = cv2.GaussianBlur(One_Gray,(3,3),0)
+laplacian_One = cv2.Laplacian(blur_One,cv2.CV_64F)
+
+#using sobel algorythm for 2.jpg
+sobelx_Two = cv2.Sobel(Two_Gray,cv2.CV_64F,1,0,ksize=5) 
+sobely_Two = cv2.Sobel(Two_Gray,cv2.CV_64F,0,1,ksize=5) 
+sobel_Two1 = np.sqrt(pow(sobelx_Two, 2) + pow(sobely_Two, 2))
+sobel_Two = sobel_Two1.astype(np.uint16)
+
+#using canny and LoG for 2.jpg
+canny_Two = cv2.Canny(Two_Gray,100,200)
+blur_Two = cv2.GaussianBlur(Two_Gray,(3,3),0)
+laplacian_Two = cv2.Laplacian(blur_Two,cv2.CV_64F)
+      
+cv2.imshow('sobel_One',sobel_One) 
+cv2.imshow('canny_One',canny_One) 
+cv2.imshow("laplacian_One",laplacian_One) 
+
+cv2.imshow('sobel_Two',sobel_Two) 
+cv2.imshow('canny_Two',canny_Two) 
+cv2.imshow("laplacian_Two",laplacian_Two) 
+
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
 
