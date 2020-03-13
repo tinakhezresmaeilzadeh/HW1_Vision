@@ -86,4 +86,58 @@ cv2.imshow("laplacian_Two",laplacian_Two)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
 
+#%% Question 6
+import cv2
+import numpy as np
+
+Three = cv2.imread("G:/Computer Vision/HW1_phase2/3.jpg",cv2.IMREAD_GRAYSCALE)
+Parameters = cv2.SimpleBlobDetector_Params()
+
+Parameters.minThreshold = 20
+Parameters.thresholdStep = 10
+Parameters.maxThreshold = 300
+
+Parameters.filterByCircularity = True
+Parameters.minCircularity = 0.1
+
+Parameters.filterByArea = True
+Parameters.minArea = 1000
+
+Parameters.filterByConvexity = True
+Parameters.minConvexity = 0.7
+
+Parameters.filterByInertia = True
+Parameters.minInertiaRatio = 0.05
+
+d = cv2.SimpleBlobDetector_create(Parameters).detect(Three)
+Final_image = cv2.drawKeypoints(Three, d, np.array([]), (255,0,0), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+
+cv2.imshow("Three", Final_image )
+cv2.waitKey(0)
+cv2.destroyWindow("Three")
+
+
+
+#%% 6 prime
+import cv2
+import numpy as np
+
+img = cv2.imread("G:/Computer Vision/HW1_phase2/3.jpg", 0)
+# using a lowpass filter
+img = cv2.medianBlur(img,5)
+cimg = cv2.cvtColor(img,cv2.COLOR_GRAY2BGR)
+#finding circles
+circles = cv2.HoughCircles(img,cv2.HOUGH_GRADIENT,1,20,
+                            param1=40,param2=13,minRadius=0,maxRadius=30)
+
+circles = np.uint16(np.around(circles))
+for i in circles[0,:]:
+    # drawing the outer circle
+    cv2.circle(cimg,(i[0],i[1]),i[2],(0,0,255),1)
+    # drawing the center of the circle
+    cv2.circle(cimg,(i[0],i[1]),2,(0,0,255),3)
+
+cv2.imshow('detected circles',cimg)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
 
